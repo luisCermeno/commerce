@@ -1,7 +1,10 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    {% if user.is_authenticated %}
     <h2>Active Listings</h2>
-
-    TODO
+    {% else %}
+    Sign in to see Listings.
+    {% endif %}
+    
 {% endblock %}
