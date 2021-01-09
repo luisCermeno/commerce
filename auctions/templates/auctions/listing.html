@@ -11,8 +11,10 @@
         <!-- comment section -->
         <h6>Comments:</h6>
         {% for comment in comments %}
-            <div>{{ comment.user }} @ {{ comment.date }}</div>
-            <div>{{ comment.body }}</div>
+            {% if comment.active == True %}
+                <div>{{ comment.user }} @ {{ comment.date }}</div>
+                <div>{{ comment.body }}</div>
+            {% endif %}
         {% endfor %}
         <hr class="solid">
         <!-- add comment section  -->

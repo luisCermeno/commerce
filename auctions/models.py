@@ -27,6 +27,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user} @ {self.date} on {self.listing} said: {self.body}"
