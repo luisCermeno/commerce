@@ -3,6 +3,12 @@
 {% block body %}
     {% if user.is_authenticated %}
     <h2>Active Listings</h2>
+        {% for listing in listings %}
+            <h4 class="listing_title">{{ listing.title }}</h4>
+            <div class="listing_categories">Categories: {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
+            <div class="listing_description">{{ listing.description }}</div>
+            <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
+        {% endfor %}
     {% else %}
     Sign in to see Listings.
     {% endif %}

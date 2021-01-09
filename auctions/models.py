@@ -13,8 +13,8 @@ class Category(models.Model):
 
 class Listing(models.Model):
     title = models.CharField(max_length=64)
-    description = models.CharField(max_length=500)
     categories = models.ManyToManyField(Category, blank=True, related_name="listings")
+    description = models.CharField(max_length=500)
     image = models.URLField(max_length=200, blank=True)
 
     def __str__(self):
