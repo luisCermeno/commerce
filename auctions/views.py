@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from .models import *
 from django import forms
+import datetime
 
 
 def index(request):
@@ -64,6 +65,26 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+def listing(request, title):
+    if request.method == 'POST':
+        comment = Comment(listing = Listing.objects.get(title=title), user = request.user, body = request.POST['body'], date = datetime.datetime.now(), active = True)
+        comment.save()
+        return HttpResponseRedirect(reverse("listing", args=(title,)))
+        
+    else:
+        try:
+            listing = Listing.objects.get(title=title)
+            comments = Comment.objects.filter(listing=listing)
+
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "comments": comments,
+                "datetime": datetime.datetime.now
+            })
+        except Listing.DoesNotExist:
+            return HttpResponseBadRequest("Bad Request: listing does not exist")
+
+
 def create(request):
     if request.method == 'POST':
         category = Category.objects.get(name = request.POST['category'] )
@@ -71,7 +92,6 @@ def create(request):
         new_listing.save()
         new_listing.categories.add(category)
         return HttpResponseRedirect(reverse("index"))
-
     else:
         return render(request, "auctions/create.html", {
             "categories": Category.objects.all()

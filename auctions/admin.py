@@ -9,3 +9,4 @@ class ListingAdmin(admin.ModelAdmin):
 admin.site.register(User)
 admin.site.register(Category)
 admin.site.register(Listing, ListingAdmin)
+admin.site.register(Comment)

@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <!-- listing section -->
+        <h4 class="listing_title">{{ listing.title }}</h4>
+        <div class="listing_categories">Categories: {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
+        <div class="listing_description">{{ listing.description }}</div>
+        <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
+        <hr class="solid">
+        <!-- comment section -->
+        <h6>Comments:</h6>
+        {% for comment in comments %}
+            <div>{{ comment.user }} @ {{ comment.date }}</div>
+            <div>{{ comment.body }}</div>
+        {% endfor %}
+        <hr class="solid">
+        <!-- add comment section  -->
+        <form action="{% url 'listing' listing.title %}" method="POST">
+            {% csrf_token %} 
+            <div>{{ user.username }} @ {{ datetime }}  </div>
+            <input type="text" name="body" placeholder="Add a public comment">
+            <input type="submit">
+        </form>
+    {% else %}
+    Sign in to see Listings.
+    {% endif %}
+    
+{% endblock %}
