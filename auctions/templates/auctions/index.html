@@ -10,6 +10,11 @@
             <div class="listing_description">{{ listing.description }}</div>
             <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
             <div class="listing_highest_bid">$ {{ listing.highest_bid }}</div>
+            <form action="{% url 'index' %}" method="POST">
+                {% csrf_token %} 
+                <input type="hidden" name="listing" value="{{ listing.title }}">
+                <input type="submit" name="action" value="Add to Watchlist">
+            </form>
         {% endfor %}
     {% else %}
     Sign in to see Listings.

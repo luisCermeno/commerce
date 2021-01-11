@@ -9,6 +9,15 @@ import datetime
 
 
 def index(request):
+    if request.method == "POST":
+        if request.POST['action'] == 'Add to Watchlist':
+            try:
+                target_watchlist = WatchList.objects.get(user = request.user)
+                target_watchlist.listings.add(Listing.objects.get(title = request.POST['listing']))
+            except WatchList.DoesNotExist:
+                new_watchlist = WatchList(user = request.user)
+                new_watchlist.save()
+                new_watchlist.listings.add(Listing.objects.get(title = request.POST['listing']))
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all()
     })

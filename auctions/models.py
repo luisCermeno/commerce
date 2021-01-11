@@ -43,3 +43,10 @@ class Bid(models.Model):
 
     def __str__(self):
         return f"{self.user} @ {self.date} on {self.listing} bid: $ {self.value}"
+
+class WatchList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='watchlist')
+    listings = models.ManyToManyField(Listing, blank=True, related_name='listings')
+
+    def __str__(self):
+        return f"{self.user}'s Watch List"
