@@ -7,6 +7,13 @@
         <div class="listing_categories">Categories: {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
         <div class="listing_description">{{ listing.description }}</div>
         <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
+        <!-- bid section -->
+        <div class="listing_highest_bid">$ {{ listing.highest_bid }}</div>
+        <form action="{% url 'listing' listing.title %}" method="POST">            {% csrf_token %}
+            <label>Place a Bid:</label>
+            <input name="bid" type="number" min="{{ bid_limit }}" step="0.01">
+            <input type="submit" name="action" value="Bid">
+        </form>
         <hr class="solid">
         <!-- comment section -->
         <h6>Comments:</h6>
@@ -16,13 +23,12 @@
                 <div>{{ comment.body }}</div>
             {% endif %}
         {% endfor %}
-        <hr class="solid">
         <!-- add comment section  -->
         <form action="{% url 'listing' listing.title %}" method="POST">
             {% csrf_token %} 
             <div>{{ user.username }} @ {{ datetime }}  </div>
             <input type="text" name="body" placeholder="Add a public comment">
-            <input type="submit">
+            <input type="submit" name="action" value="Comment">
         </form>
     {% else %}
     Sign in to see Listings.

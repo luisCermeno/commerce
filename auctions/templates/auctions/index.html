@@ -9,6 +9,7 @@
             <div class="listing_categories">Categories: {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
             <div class="listing_description">{{ listing.description }}</div>
             <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
+            <div class="listing_highest_bid">$ {{ listing.highest_bid }}</div>
         {% endfor %}
     {% else %}
     Sign in to see Listings.

@@ -67,10 +67,16 @@ def register(request):
 
 def listing(request, title):
     if request.method == 'POST':
-        comment = Comment(listing = Listing.objects.get(title=title), user = request.user, body = request.POST['body'], date = datetime.datetime.now(), active = True)
-        comment.save()
+        target_listing = Listing.objects.get(title=title)
+        if request.POST['action'] == 'Comment':
+            new_comment = Comment(listing = target_listing, user = request.user, body = request.POST['body'], date = datetime.datetime.now(), active = True)
+            new_comment.save()
+        elif request.POST['action'] == 'Bid':
+            new_bid = Bid(listing = target_listing, user = request.user, value = float(request.POST['bid']), date = datetime.datetime.now(), active = True)
+            new_bid.save()
+            target_listing.highest_bid = float(new_bid.value)
+            target_listing.save()
         return HttpResponseRedirect(reverse("listing", args=(title,)))
-        
     else:
         try:
             listing = Listing.objects.get(title=title)
@@ -79,7 +85,8 @@ def listing(request, title):
             return render(request, "auctions/listing.html", {
                 "listing": listing,
                 "comments": comments,
-                "datetime": datetime.datetime.now
+                "datetime": datetime.datetime.now,
+                "bid_limit": float(listing.highest_bid) + 0.01
             })
         except Listing.DoesNotExist:
             return HttpResponseBadRequest("Bad Request: listing does not exist")
@@ -88,7 +95,7 @@ def listing(request, title):
 def create(request):
     if request.method == 'POST':
         category = Category.objects.get(name = request.POST['category'] )
-        new_listing = Listing(title = request.POST['title'] , description = request.POST['description'], image = request.POST['image'])
+        new_listing = Listing(title = request.POST['title'] , description = request.POST['description'], image = request.POST['image'], highest_bid = float(request.POST['starting_bid']) )
         new_listing.save()
         new_listing.categories.add(category)
         return HttpResponseRedirect(reverse("index"))

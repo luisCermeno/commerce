@@ -24,10 +24,15 @@
             <label>Description:</label>
             <textarea name="description" cols="30" rows="10" placeholder="Description Here"></textarea>
         </div>
+        <!-- bid field -->
+        <div>
+            <label>Starting Bid:</label>
+            <input name="starting_bid" type="number" min="0" step="0.01">
+        </div>
         <!-- image field -->
         <div>
             <label>Image:</label>
-            <input type="url" name="image" placeholder="https://example.com" pattern="https://.*" size="30" required>
+            <input name="image" type="url"  placeholder="https://example.com" pattern="https://.*" size="30" required>
         </div>
         <button type="submit">Post</button>
     </form>
