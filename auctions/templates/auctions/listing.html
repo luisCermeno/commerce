@@ -8,11 +8,36 @@
         <div class="listing_description">{{ listing.description }}</div>
         <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
         <!-- watchlist section -->
-        
+        <div>
+            Elements in watch list of the user:
+            [
+            {% for listing in watchlist %}
+                "{{ listing }}"
+            {% endfor %}
+            ]
+        </div>
+        <div>
+            Variable found is {{ found}}
+        </div>
+        <div>
+            Variable title is {{title}}
+        </div>
+        {% if found == 'True' %}
+            <form action="{% url 'listing' listing.title %}" method="POST">
+                {% csrf_token %} 
+                <input type="submit" name="action" value="Delete from Watchlist">
+            </form>
+        {% elif found == 'False' %}
+            <form action="{% url 'listing' listing.title %}" method="POST">
+                {% csrf_token %} 
+                <input type="submit" name="action" value="Add to Watchlist">
+            </form>
+        {% endif %}
         <!-- bid section -->
         <div class="listing_highest_bid">$ {{ listing.highest_bid }}</div>
-        <form action="{% url 'listing' listing.title %}" method="POST">            {% csrf_token %}
+        <form action="{% url 'listing' listing.title %}" method="POST">
             <label>Place a Bid:</label>
+            {% csrf_token %}
             <input name="bid" type="number" min="{{ bid_limit }}" step="0.01">
             <input type="submit" name="action" value="Bid">
         </form>

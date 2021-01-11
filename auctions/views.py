@@ -9,15 +9,6 @@ import datetime
 
 
 def index(request):
-    if request.method == "POST":
-        if request.POST['action'] == 'Add to Watchlist':
-            try:
-                target_watchlist = WatchList.objects.get(user = request.user)
-                target_watchlist.listings.add(Listing.objects.get(title = request.POST['listing']))
-            except WatchList.DoesNotExist:
-                new_watchlist = WatchList(user = request.user)
-                new_watchlist.save()
-                new_watchlist.listings.add(Listing.objects.get(title = request.POST['listing']))
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all()
     })
@@ -77,7 +68,21 @@ def register(request):
 def listing(request, title):
     if request.method == 'POST':
         target_listing = Listing.objects.get(title=title)
-        if request.POST['action'] == 'Comment':
+        if request.POST['action'] == 'Add to Watchlist':
+            try:
+                target_watchlist = WatchList.objects.get(user = request.user)
+                target_watchlist.listings.add(target_listing)
+            except WatchList.DoesNotExist:
+                new_watchlist = WatchList(user = request.user)
+                new_watchlist.save()
+                new_watchlist.listings.add(target_listing)
+        elif request.POST['action'] == 'Delete from Watchlist':
+            try:
+                target_watchlist = WatchList.objects.get(user = request.user)
+                target_watchlist.listings.remove(target_listing)
+            except WatchList.DoesNotExist:
+                return HttpResponseBadRequest("Bad Request: watchlist does not exist")
+        elif request.POST['action'] == 'Comment':
             new_comment = Comment(listing = target_listing, user = request.user, body = request.POST['body'], date = datetime.datetime.now(), active = True)
             new_comment.save()
         elif request.POST['action'] == 'Bid':
@@ -90,10 +95,16 @@ def listing(request, title):
         try:
             listing = Listing.objects.get(title=title)
             comments = Comment.objects.filter(listing=listing)
-
+            found = 'False'
+            watchlist = WatchList.objects.get(user = request.user).listings.all()
+            if listing in watchlist:
+                found = 'True'
             return render(request, "auctions/listing.html", {
                 "listing": listing,
                 "comments": comments,
+                "found": found,
+                "title": title,
+                "watchlist": watchlist,
                 "datetime": datetime.datetime.now,
                 "bid_limit": float(listing.highest_bid) + 0.01
             })
