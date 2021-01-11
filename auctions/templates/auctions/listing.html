@@ -8,26 +8,12 @@
         <div class="listing_description">{{ listing.description }}</div>
         <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
         <!-- watchlist section -->
-        <div>
-            Elements in watch list of the user:
-            [
-            {% for listing in watchlist %}
-                "{{ listing }}"
-            {% endfor %}
-            ]
-        </div>
-        <div>
-            Variable found is {{ found}}
-        </div>
-        <div>
-            Variable title is {{title}}
-        </div>
-        {% if found == 'True' %}
+        {% if listing in watchlist %}
             <form action="{% url 'listing' listing.title %}" method="POST">
                 {% csrf_token %} 
                 <input type="submit" name="action" value="Delete from Watchlist">
             </form>
-        {% elif found == 'False' %}
+        {% else %}
             <form action="{% url 'listing' listing.title %}" method="POST">
                 {% csrf_token %} 
                 <input type="submit" name="action" value="Add to Watchlist">

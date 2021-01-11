@@ -95,15 +95,10 @@ def listing(request, title):
         try:
             listing = Listing.objects.get(title=title)
             comments = Comment.objects.filter(listing=listing)
-            found = 'False'
             watchlist = WatchList.objects.get(user = request.user).listings.all()
-            if listing in watchlist:
-                found = 'True'
             return render(request, "auctions/listing.html", {
                 "listing": listing,
                 "comments": comments,
-                "found": found,
-                "title": title,
                 "watchlist": watchlist,
                 "datetime": datetime.datetime.now,
                 "bid_limit": float(listing.highest_bid) + 0.01
