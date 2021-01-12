@@ -95,7 +95,10 @@ def listing(request, title):
         try:
             listing = Listing.objects.get(title=title)
             comments = Comment.objects.filter(listing=listing)
-            watchlist = WatchList.objects.get(user = request.user).listings.all()
+            try:
+                watchlist = WatchList.objects.get(user = request.user).listings.all()
+            except:
+                watchlist = []
             return render(request, "auctions/listing.html", {
                 "listing": listing,
                 "comments": comments,
@@ -118,3 +121,12 @@ def create(request):
         return render(request, "auctions/create.html", {
             "categories": Category.objects.all()
         })
+        
+def watchlist(request):
+    try:
+        watchlist = WatchList.objects.get(user = request.user).listings.all()
+    except:
+        watchlist = []
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": watchlist
+    })

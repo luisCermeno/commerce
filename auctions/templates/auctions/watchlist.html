@@ -1,0 +1,12 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <h4> My Watchlist :</h4>
+        {% for listing in watchlist %}
+           <div>
+                <h4 class="listing_title"><a href="{% url 'listing' listing %}">{{ listing }}</a></h4>
+            </div> 
+        {% endfor %} 
+    {% endif %} 
+{% endblock %}
