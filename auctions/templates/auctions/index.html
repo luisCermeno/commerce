@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    {% if user.is_authenticated %}
+
     <h2>Active Listings</h2>
         {% for listing in listings %}
             <hr class="solid">
@@ -9,10 +9,7 @@
             <div class="listing_categories">Categories: {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
             <div class="listing_description">{{ listing.description }}</div>
             <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
-            <div class="listing_highest_bid">$ {{ listing.highest_bid }}</div>
+            <div class="listing_current_bid">$ {{ listing.current_bid }}</div>
         {% endfor %}
-    {% else %}
-    Sign in to see Listings.
-    {% endif %}
     
 {% endblock %}

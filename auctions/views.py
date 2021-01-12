@@ -88,7 +88,7 @@ def listing(request, title):
         elif request.POST['action'] == 'Bid':
             new_bid = Bid(listing = target_listing, user = request.user, value = float(request.POST['bid']), date = datetime.datetime.now())
             new_bid.save()
-            target_listing.highest_bid = float(new_bid.value)
+            target_listing.current_bid = float(new_bid.value)
             target_listing.save()
         return HttpResponseRedirect(reverse("listing", args=(title,)))
     else:
@@ -104,7 +104,7 @@ def listing(request, title):
                 "comments": comments,
                 "watchlist": watchlist,
                 "datetime": datetime.datetime.now,
-                "bid_limit": float(listing.highest_bid) + 0.01
+                "bid_limit": float(listing.current_bid) + 0.01
             })
         except Listing.DoesNotExist:
             return HttpResponseBadRequest("Bad Request: listing does not exist")
@@ -113,9 +113,11 @@ def listing(request, title):
 def create(request):
     if request.method == 'POST':
         category = Category.objects.get(name = request.POST['category'] )
-        new_listing = Listing(title = request.POST['title'] , user = request.user, description = request.POST['description'], image = request.POST['image'], highest_bid = float(request.POST['starting_bid']))
+        new_listing = Listing(title = request.POST['title'] , user = request.user, description = request.POST['description'], image = request.POST['image'], current_bid = float(request.POST['starting_bid']))
         new_listing.save()
         new_listing.categories.add(category)
+        new_bid = Bid(listing = new_listing, user = request.user, value = float(request.POST['starting_bid']), date = datetime.datetime.now())
+        new_bid.save()
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/create.html", {

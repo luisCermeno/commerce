@@ -28,7 +28,7 @@
         <!-- img section  -->
         <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
         <!-- bid section -->
-        <div class="listing_highest_bid">$ {{ listing.highest_bid }}</div>
+        <div class="listing_current_bid">Current Bid: $ {{ listing.current_bid }}</div>
         {% if listing.user != request.user %}
             <form action="{% url 'listing' listing.title %}" method="POST">
                 <label>Place a Bid:</label>
@@ -54,7 +54,7 @@
             <input type="submit" name="action" value="Comment">
         </form>
     {% else %}
-    Sign in to see Listings.
+    Log in or Register to see this listing.
     {% endif %}
     
 {% endblock %}
