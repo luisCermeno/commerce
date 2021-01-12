@@ -1,5 +1,7 @@
 {% extends "auctions/layout.html" %}
 
+{% block title %}{{ listing.title }} &middot Auctions{% endblock %}
+
 {% block body %}
     {% if user.is_authenticated %}
         <!-- listing section -->
