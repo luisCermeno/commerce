@@ -26,7 +26,26 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'watchlist' %}">
-                        Watch List <span>({{ user.watchlist.listings.all.count}})</span>
+                        Watch List 
+                        <span>
+                            {% if user.watchlist.listings.all.count > 0 %}    
+                                ({{ user.watchlist.listings.all.count}} )
+                            {% else %} 
+                                (0)
+                            {% endif %}
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'myListings' %}">
+                        My Listings 
+                        <span>
+                            {% if user.listings.all.count > 0 %}    
+                                ({{ user.listings.all.count}})
+                            {% else %} 
+                                (0)
+                            {% endif %}
+                        </span>
                     </a>
                 </li>
                 <li class="nav-item">

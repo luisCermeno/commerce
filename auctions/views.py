@@ -83,10 +83,10 @@ def listing(request, title):
             except WatchList.DoesNotExist:
                 return HttpResponseBadRequest("Bad Request: watchlist does not exist")
         elif request.POST['action'] == 'Comment':
-            new_comment = Comment(listing = target_listing, user = request.user, body = request.POST['body'], date = datetime.datetime.now(), active = True)
+            new_comment = Comment(listing = target_listing, user = request.user, body = request.POST['body'], date = datetime.datetime.now())
             new_comment.save()
         elif request.POST['action'] == 'Bid':
-            new_bid = Bid(listing = target_listing, user = request.user, value = float(request.POST['bid']), date = datetime.datetime.now(), active = True)
+            new_bid = Bid(listing = target_listing, user = request.user, value = float(request.POST['bid']), date = datetime.datetime.now())
             new_bid.save()
             target_listing.highest_bid = float(new_bid.value)
             target_listing.save()
@@ -113,7 +113,7 @@ def listing(request, title):
 def create(request):
     if request.method == 'POST':
         category = Category.objects.get(name = request.POST['category'] )
-        new_listing = Listing(title = request.POST['title'] , description = request.POST['description'], image = request.POST['image'], highest_bid = float(request.POST['starting_bid']) )
+        new_listing = Listing(title = request.POST['title'] , user = request.user, description = request.POST['description'], image = request.POST['image'], highest_bid = float(request.POST['starting_bid']))
         new_listing.save()
         new_listing.categories.add(category)
         return HttpResponseRedirect(reverse("index"))
@@ -129,4 +129,13 @@ def watchlist(request):
         watchlist = []
     return render(request, "auctions/watchlist.html", {
         "watchlist": watchlist
+    })
+
+def myListings(request):
+    try:
+        listings = Listing.objects.filter(user = request.user)
+    except:
+        listings = []
+    return render(request, "auctions/myListings.html", {
+        "listings": listings
     })

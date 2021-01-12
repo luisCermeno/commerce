@@ -2,11 +2,11 @@
 
 {% block body %}
     {% if user.is_authenticated %}
-        <h4> My Watchlist :</h4>
-        {% for listing in watchlist %}
+        <h4> My Posted Listings :</h4>
+        {% for listing in listings %}
            <div>
                 <h4 class="listing_title"><a href="{% url 'listing' listing %}">{{ listing }}</a></h4>
-            </div> 
+            </div>
         {% empty %}
             <h6>No Listings Yet</h6>
         {% endfor %} 
