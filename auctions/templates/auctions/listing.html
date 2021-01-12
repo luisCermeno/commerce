@@ -4,7 +4,13 @@
     {% if user.is_authenticated %}
         <!-- listing section -->
         <h4 class="listing_title">{{ listing.title }}</h4>
-        <h6 class="user"> Posted by {{ listing.user}}</h6>
+        <h6 class="user"> Posted by 
+            {% if listing.user != request.user %}
+                {{ listing.user}}
+            {% else %}
+                You
+            {% endif %}
+        </h6>
         <div class="listing_categories">Categories: {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
         <div class="listing_description">{{ listing.description }}</div>
         <!-- watchlist section -->
@@ -23,12 +29,14 @@
         <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
         <!-- bid section -->
         <div class="listing_highest_bid">$ {{ listing.highest_bid }}</div>
-        <form action="{% url 'listing' listing.title %}" method="POST">
-            <label>Place a Bid:</label>
-            {% csrf_token %}
-            <input name="bid" type="number" min="{{ bid_limit }}" step="0.01">
-            <input type="submit" name="action" value="Bid">
-        </form>
+        {% if listing.user != request.user %}
+            <form action="{% url 'listing' listing.title %}" method="POST">
+                <label>Place a Bid:</label>
+                {% csrf_token %}
+                <input name="bid" type="number" min="{{ bid_limit }}" step="0.01">
+                <input type="submit" name="action" value="Bid">
+            </form>
+        {% endif %}
         <hr class="solid">
         <!-- comment section -->
         <h6>Comments:</h6>
