@@ -6,62 +6,71 @@
 {% block body %}
     
         <div class="container-fluid">
-            <div class="row margins">
+            <div class="row listing-margins">
                 {% if user.is_authenticated %}
-                <div class="col-lg-6 border description">
+                <div class="col-lg-6 border description col-main">
                     <h2 class="listing-listing_title">{{ listing.title }}</h2>
-                    <h6 class="user"> Posted by 
-                        {% if listing.user != request.user %}
-                            {{ listing.user}}
-                        {% else %}
-                            You
-                        {% endif %}
-                    </h6>
-                    <div class="listing-listing_categories">Categories: {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
-                    <div class="listing-listing_description">{{ listing.description }}</div>
                     <!-- watchlist section -->
                     {% if listing in watchlist %}
-                        <form action="{% url 'listing' listing.title %}" method="POST">
+                        <form class="listing-watchlist" action="{% url 'listing' listing.title %}" method="POST">
                             {% csrf_token %} 
-                            <input type="submit" name="action" value="Delete from Watchlist">
+                            <input  type="submit" name="action" value="Delete from Watchlist">
                         </form>
                     {% else %}
-                        <form action="{% url 'listing' listing.title %}" method="POST">
+                        <form class="listing-watchlist" action="{% url 'listing' listing.title %}" method="POST">
                             {% csrf_token %} 
-                            <input type="submit" name="action" value="Add to Watchlist">
+                            <input  type="submit" name="action" value="Add to Watchlist">
                         </form>
                     {% endif %}
+                    <h6 class="listing-user"> Posted by 
+                        {% if listing.user != request.user %}
+                            <b>{{ listing.user}} </b>
+                        {% else %}
+                            <b>You</b>
+                        {% endif %}
+                    </h6>
+                    <div class="listing-listing_categories"> <b> Categories: </b> {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
+                    <label><b> Description: </b></label>
+                    <div class="listing-listing_description">{{ listing.description }}</div>
                     <!-- bid section -->
                     {% if listing.user != request.user %}
-                        <form action="{% url 'listing' listing.title %}" method="POST">
+                        <form class="listing-bid" action="{% url 'listing' listing.title %}" method="POST">
                             <label>Place a Bid:</label>
                             {% csrf_token %}
-                            <input name="bid" type="number" min="{{ bid_limit }}" step="0.01">
+                            <input name="bid" type="number" min="{{ bid_limit }}" step="0.01" placeholder="> {{ listing.current_bid|intcomma }}">
                             <input type="submit" name="action" value="Bid">
                         </form>
                     {% endif %}
                 </div>
-                <div class="col-lg-6 border image">
-                    <!-- img section  -->
-                    <img class="listing-listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
-                    <!-- current bid section -->
-                    <div class="listing-listing_current_bid">Current Bid: $ {{ listing.current_bid|intcomma }}</div>
+                <div class="col-lg-6 border d-flex justify-content-center align-items-center listing-col-main">
+                    <div class="text-center">
+                        <!-- img section  -->
+                        <img class="listing-listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
+                        <!-- current bid section -->
+                        <h4 class="listing-listing_current_bid">Current Bid: $ {{ listing.current_bid|intcomma }}</h4>
+                    </div>
                 </div>
-                <div class="col-12 border comments">
+                <div class="col-12 border listing-col-bottom">
                     <!-- comment section -->
-                    <h6>Comments:</h6>
+                    <label><b> Comments: </b></label>
                     {% for comment in comments %}
                         {% if comment.active == True %}
-                            <div>{{ comment.user }} @ {{ comment.date }}</div>
-                            <div>{{ comment.body }}</div>
+                            <div class="listing-comment">
+                                <span class="listing-comment-user"> {{ comment.user }} </span> : <span class="listing-comment-body"> {{ comment.body }} </span> 
+                                <div class="listing-comment-date">{{ comment.date }} </div>
+                            </div>
                         {% endif %}
                     {% endfor %}
                     <!-- add comment section  -->
-                    <form action="{% url 'listing' listing.title %}" method="POST">
+                    <form action="{% url 'listing' listing.title %}" method="POST" >
                         {% csrf_token %} 
-                        <div>{{ user.username }} @ {{ datetime }}  </div>
-                        <input type="text" name="body" placeholder="Add a public comment">
-                        <input type="submit" name="action" value="Comment">
+                        <div class="listing-comment">
+                            <span class="listing-comment-user"> {{ user.username }} </span> : 
+                            <input class="listing-comment-body" type="text" name="body" placeholder="Add a public comment" autocomplete="off">
+                            <input type="submit" name="action" value="Comment">
+                            <div class="listing-comment-date" >{{ datetime }}</div>
+                        </div>
+
                     </form>
                 </div>
                 {% else %}
