@@ -6,15 +6,12 @@
     background-color: black;
 }
 /* index.html */
-
 .col-listing{
     height: 420px;
     padding-top: 10px;
 }
 .listing_title{
-    font-size: 25px;
     color: black;
-    font-weight: 450;
 }
 
 .listing_description{
@@ -38,4 +35,32 @@
     font-size: 20px;
     color: black;
     font-weight: 450;
+}
+/* listing.html */
+
+.listing-listing_title{
+    color: black;
+}
+.listing-listing_description{
+    max-height: 100px;
+    overflow: scroll;
+    padding-top: 10px;
+}
+.listing-listing_image{
+    max-height: 250px;
+    max-width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 30px;
+}
+.listing-listing_current_bid{
+    padding-top: 10px;
+    font-size: 20px;
+    color: black;
+    font-weight: 450;
+}
+.margins{
+    margin-left: 10%;
+    margin-right: 10%;
 }

@@ -9,7 +9,7 @@
             <div class="row">
                 {% for listing in listings %}
                 <div class="col-md-4 col-sm-6 border col-listing">
-                    <a class="listing_title" href="{% url 'listing' listing.title %}">{{ listing.title }}</a>
+                    <h3><a class="listing_title" href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h3>
                     <div class="listing_description ">{{ listing.description }}</div>
                     <img class="listing_image " src="{{ listing.image }}" alt="{{ listing.title }} image">
                     <div class="listing_current_bid">$ {{ listing.current_bid|intcomma }}</div>
