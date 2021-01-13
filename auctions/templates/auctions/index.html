@@ -1,17 +1,22 @@
 {% extends "auctions/layout.html" %}
+{% load humanize %}
 
 {% block title %}Auctions{% endblock %}
+{% block nav_item_listings %}active{% endblock nav_item_listings %}
 
 {% block body %}
+        <div class="container-fluid">
+            <div class="row">
+                {% for listing in listings %}
+                <div class="col-md-4 col-sm-6 border col-listing">
+                    <a class="listing_title" href="{% url 'listing' listing.title %}">{{ listing.title }}</a>
+                    <div class="listing_description ">{{ listing.description }}</div>
+                    <img class="listing_image " src="{{ listing.image }}" alt="{{ listing.title }} image">
+                    <div class="listing_current_bid">$ {{ listing.current_bid|intcomma }}</div>
+                </div>
+                {% endfor %}
+            </div>
 
-    <h2>Active Listings</h2>
-        {% for listing in listings %}
-            <hr class="solid">
-            <h4 class="listing_title"><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
-            <div class="listing_categories">Categories: {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
-            <div class="listing_description">{{ listing.description }}</div>
-            <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
-            <div class="listing_current_bid">$ {{ listing.current_bid }}</div>
-        {% endfor %}
-    
+        </div>
+
 {% endblock %}

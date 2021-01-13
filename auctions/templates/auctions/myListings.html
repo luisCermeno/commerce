@@ -1,6 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block title %}My Listings &middot Auctions{% endblock %}
+{% block nav_item_myListings %}active{% endblock nav_item_myListings %}
 
 {% block body %}
     {% if user.is_authenticated %}

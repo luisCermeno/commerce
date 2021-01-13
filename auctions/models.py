@@ -18,7 +18,7 @@ class Listing(models.Model):
     title = models.CharField(max_length=64)
     user = models.ForeignKey(User, default=1 , on_delete=models.CASCADE, related_name='listings')
     categories = models.ManyToManyField(Category, blank=True, related_name="listings")
-    description = models.CharField(max_length=500)
+    description = models.TextField(max_length=500)
     image = models.URLField(max_length=200, blank=True)
     current_bid = models.DecimalField(decimal_places=2, max_digits=9, default=0, validators=[MinValueValidator(0)])
 

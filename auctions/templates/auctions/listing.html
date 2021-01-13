@@ -1,4 +1,5 @@
 {% extends "auctions/layout.html" %}
+{% load humanize %}
 
 {% block title %}{{ listing.title }} &middot Auctions{% endblock %}
 
@@ -30,7 +31,7 @@
         <!-- img section  -->
         <img class="listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
         <!-- bid section -->
-        <div class="listing_current_bid">Current Bid: $ {{ listing.current_bid }}</div>
+        <div class="listing_current_bid">Current Bid: $ {{ listing.current_bid|intcomma }}</div>
         {% if listing.user != request.user %}
             <form action="{% url 'listing' listing.title %}" method="POST">
                 <label>Place a Bid:</label>

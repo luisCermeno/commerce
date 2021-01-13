@@ -1,6 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block title %}My Watchlist &middot Auctions{% endblock %}
+{% block nav_item_watchlist %}active{% endblock nav_item_watchlist %}
 
 {% block body %}
     {% if user.is_authenticated %}
