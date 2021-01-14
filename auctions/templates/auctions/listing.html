@@ -36,7 +36,12 @@
                     <b>You</b>
                 {% endif %}
             </h6>
-            <div class="listing-listing_categories"> <b> Categories: </b> {% for category in listing.categories.all %}{{ category }} {% endfor %} </div>
+            <div class="listing-listing_categories"> 
+                <b> Categories: </b> 
+                {% for category in listing.categories.all %}
+                <a href="{% url 'category'  category %}">{{ category }} </a>
+                {% endfor %} 
+            </div>
             <label><b> Description: </b></label>
             <div class="listing-listing_description">{{ listing.description }}</div>
             <!-- bid or close section -->
@@ -108,10 +113,6 @@
                     <div class="listing-comment-date" >{{ datetime }}</div>
                 </div>
             </form>
-        </div>
-        {% else %}
-        <div class="col-12 border text-center">
-            <h4> Please <b>Log in</b> to see this listing </h4>
         </div>
         {% endif %}
     </div>

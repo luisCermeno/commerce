@@ -12,6 +12,9 @@
     border-radius: 20px;
 }
 /*********index.html**********/
+.filter_msg{
+    padding-bottom: 5px;
+}
 .col-listing{
     height: 470px;
     padding-top: 10px;

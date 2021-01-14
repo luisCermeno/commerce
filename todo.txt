@@ -6,8 +6,8 @@
 
 ->If a user is signed in on a closed listing page, and the user has won that auction, the page should say so.
 
-<------ fix this -------->
-
 ->Users should be able to visit a page that displays a list of all listing categories. Clicking on the name of any category should take the user to a page that displays all of the active listings in that category.
 
 ->Adding the @login_required decorator on top of any view will ensure that only a user who is logged in can access that view.
+
+<------ all done-------->

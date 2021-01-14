@@ -3,8 +3,9 @@ from django.db import IntegrityError
 from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 from .models import *
-from django import forms
 import datetime
 
 
@@ -14,6 +15,12 @@ def index(request):
         "current_bids": Bid.objects.filter(is_current = True)
     })
 
+def category(request, name):
+    return render(request, "auctions/index.html", {
+        "filter": name,
+        "listings": Listing.objects.filter(categories = Category.objects.get(name = name)),
+        "current_bids": Bid.objects.filter(is_current = True)
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -33,12 +40,6 @@ def login_view(request):
             })
     else:
         return render(request, "auctions/login.html")
-
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("index"))
-
 
 def register(request):
     if request.method == "POST":
@@ -66,6 +67,12 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+@login_required
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))
+
+@login_required
 def listing(request, title):
     if request.method == 'POST':
         target_listing = Listing.objects.get(title=title)
@@ -119,7 +126,7 @@ def listing(request, title):
         except Listing.DoesNotExist:
             return HttpResponseBadRequest("Bad Request: listing does not exist")
 
-
+@login_required
 def create(request):
     if request.method == 'POST':
         category = Category.objects.get(name = request.POST['category'] )
@@ -133,7 +140,8 @@ def create(request):
         return render(request, "auctions/create.html", {
             "categories": Category.objects.all()
         })
-        
+
+@login_required
 def watchlist(request):
     try:
         watchlist = WatchList.objects.get(user = request.user).listings.all()
@@ -144,6 +152,7 @@ def watchlist(request):
         "current_bids": Bid.objects.filter(is_current = True)
     })
 
+@login_required
 def myListings(request):
     try:
         listings = Listing.objects.filter(user = request.user)
@@ -151,11 +160,5 @@ def myListings(request):
         listings = []
     return render(request, "auctions/myListings.html", {
         "listings": listings,
-        "current_bids": Bid.objects.filter(is_current = True)
-    })
-
-def category(request, name):
-    return render(request, "auctions/index.html", {
-        "listings": Listing.objects.filter(categories = name),
         "current_bids": Bid.objects.filter(is_current = True)
     })
