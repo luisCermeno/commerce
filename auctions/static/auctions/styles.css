@@ -59,6 +59,9 @@
     color: black;
     padding-top: 10px;
 }
+.listing-closed{
+    color: red;
+}
 .listing-watchlist{
     display: inline-block;
     padding-left: 10px;
@@ -91,11 +94,11 @@
 }
 .listing-listing_current_bid{
     padding-top: 10px;
-    color: black;
+    color: green;
 }
 .listing-listing_starting_bid{
     padding-top: 10px;
-    color: green;
+    color: black;
 }
 /* bottom col */
 .listing-comment{
@@ -137,11 +140,15 @@ label {
 .watchlist-listing_title{
     display: inline-block;
 }
+.watchlist-bid{
+    display: inline-block;
+}
+.watchlist-listing_starting_bid{
+    display: inline-block;
+    color: black;
+}
 
 .watchlist-listing_current_bid{
     display: inline-block;
-}
-
-.watchlist-starting-bid{
     color: green;
 }

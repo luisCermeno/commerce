@@ -5,19 +5,23 @@
 {% block nav_item_myListings %}active{% endblock nav_item_myListings %}
 
 {% block body %}
-    {% if user.is_authenticated %}
+{% if user.is_authenticated %}
     <ul>
         <h3> My Posted Listings :</h3>
         {% for listing in listings %}
             <li>
                 <h4 class="watchlist-listing_title"><a href="{% url 'listing' listing %}">{{ listing }}</a></h4>
-                <div class="watchlist-listing_current_bid">
+                <div class="watchlist-bid">
                     {% for bid in current_bids %}
                         {% if bid.listing == listing %}
-                            {% if bid.is_starting == True %}
-                                <h5 class="watchlist-starting-bid"> ( $ {{ bid.value|intcomma }} ) </h5>
+                            {% if listing.closed == True %}
+                            <h5 class="listing-closed"> ( $ {{ bid.value|intcomma }} ) </h5>
                             {% else %}
-                                <h5> ( $ {{ bid.value|intcomma }} ) </h5>
+                                {% if bid.is_starting == True %}
+                                    <h5 class="watchlist-listing_starting_bid"> ( $ {{ bid.value|intcomma }} ) </h5>
+                                {% else %}
+                                    <h5 class="watchlist-listing_current_bid"> ( $ {{ bid.value|intcomma }} ) </h5>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     {% endfor %}
@@ -29,5 +33,5 @@
             </li>
         {% endfor %} 
     </ul>
-    {% endif %} 
+{% endif %} 
 {% endblock %}

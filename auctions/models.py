@@ -7,7 +7,6 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username}"
 
-
 class Category(models.Model): 
     name = models.CharField(max_length=64)
 
@@ -20,6 +19,8 @@ class Listing(models.Model):
     categories = models.ManyToManyField(Category, blank=True, related_name="listings")
     description = models.TextField(max_length=500)
     image = models.URLField(max_length=200, blank=True)
+    closed = models.BooleanField(default=False)
+    winner = models.ForeignKey(User, null=True , on_delete=models.CASCADE, related_name='winned_listings')
 
     def __str__(self):
         return f"{self.title}"

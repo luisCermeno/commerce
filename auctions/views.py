@@ -92,6 +92,10 @@ def listing(request, title):
             previous_bid.save()
             new_bid = Bid(listing = target_listing, user = request.user, value = float(request.POST['bid']), date = datetime.datetime.now(), is_current=True)
             new_bid.save()
+        elif request.POST['action'] == 'Close Auction':
+            target_listing.closed = True
+            target_listing.winner = Bid.objects.get(listing = target_listing, is_current = True).user
+            target_listing.save()
         return HttpResponseRedirect(reverse("listing", args=(title,)))
     else:
         try:
