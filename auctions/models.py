@@ -40,7 +40,8 @@ class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bids')
     value = models.DecimalField(decimal_places=2, max_digits=9, default=0, validators=[MinValueValidator(0)])
     date = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=True)
+    is_starting = models.BooleanField(default=False)
+    is_current = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user} @ {self.date} on {self.listing} bid: $ {self.value}"

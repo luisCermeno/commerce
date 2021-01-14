@@ -37,7 +37,12 @@
                         <form class="listing-bid" action="{% url 'listing' listing.title %}" method="POST">
                             <label>Place a Bid:</label>
                             {% csrf_token %}
-                            <input class="listing-bid-input" name="bid" type="number" min="{{ bid_limit }}" step="0.01" placeholder="> {{ listing.current_bid|intcomma }}">
+                            {% if current_bid.is_starting == True %}
+                                <input class="listing-bid-input" name="bid" type="number" min="{{ current_bid.value }}" step="0.01" placeholder="&#8805 {{ current_bid.value|intcomma }}">
+                            {% else %}
+                                <input class="listing-bid-input" name="bid" type="number" min="{{ bid_limit }}" step="0.01" placeholder="> {{ current_bid.value|intcomma }}">
+                            {% endif%}
+                            
                             <input class="btn btn-dark" type="submit" name="action" value="Bid">
                         </form>
                     {% endif %}
@@ -47,7 +52,12 @@
                         <!-- img section  -->
                         <img class="listing-listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
                         <!-- current bid section -->
-                        <h4 class="listing-listing_current_bid">Current Bid: $ {{ listing.current_bid|intcomma }}</h4>
+                        {% if current_bid.is_starting == True %}
+                            <h4 class="listing-listing_starting_bid">Starting Bid: $ {{ current_bid.value|intcomma }}</h4>
+                        {% else %}
+                            <h4 class="listing-listing_current_bid">Current Bid: $ {{ current_bid.value|intcomma }}</h4>
+                        {% endif %}
+                        <div> <b>{{ nBids }} </b> bid(s) so far</div>
                     </div>
                 </div>
                 <div class="col-12 listing-col-bottom border-top">

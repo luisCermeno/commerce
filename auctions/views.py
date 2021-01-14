@@ -10,7 +10,8 @@ import datetime
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "listings": Listing.objects.all()
+        "listings": Listing.objects.all(),
+        "current_bids": Bid.objects.filter(is_current = True)
     })
 
 
@@ -86,7 +87,10 @@ def listing(request, title):
             new_comment = Comment(listing = target_listing, user = request.user, body = request.POST['body'], date = datetime.datetime.now())
             new_comment.save()
         elif request.POST['action'] == 'Bid':
-            new_bid = Bid(listing = target_listing, user = request.user, value = float(request.POST['bid']), date = datetime.datetime.now())
+            previous_bid = Bid.objects.get(listing = target_listing, is_current = True)
+            previous_bid.is_current = False
+            previous_bid.save()
+            new_bid = Bid(listing = target_listing, user = request.user, value = float(request.POST['bid']), date = datetime.datetime.now(), is_current=True)
             new_bid.save()
             target_listing.current_bid = float(new_bid.value)
             target_listing.save()
@@ -95,6 +99,8 @@ def listing(request, title):
         try:
             listing = Listing.objects.get(title=title)
             comments = Comment.objects.filter(listing=listing)
+            current_bid = Bid.objects.get(listing = listing, is_current = True)
+            nBids = Bid.objects.filter(listing = listing , is_starting = False).count()
             try:
                 watchlist = WatchList.objects.get(user = request.user).listings.all()
             except:
@@ -102,9 +108,11 @@ def listing(request, title):
             return render(request, "auctions/listing.html", {
                 "listing": listing,
                 "comments": comments,
+                "current_bid": current_bid,
+                "nBids": nBids,
                 "watchlist": watchlist,
                 "datetime": datetime.datetime.now,
-                "bid_limit": float(listing.current_bid) + 0.01
+                "bid_limit": float(current_bid.value) + 0.01
             })
         except Listing.DoesNotExist:
             return HttpResponseBadRequest("Bad Request: listing does not exist")
@@ -116,7 +124,7 @@ def create(request):
         new_listing = Listing(title = request.POST['title'] , user = request.user, description = request.POST['description'], image = request.POST['image'], current_bid = float(request.POST['starting_bid']))
         new_listing.save()
         new_listing.categories.add(category)
-        new_bid = Bid(listing = new_listing, user = request.user, value = float(request.POST['starting_bid']), date = datetime.datetime.now())
+        new_bid = Bid(listing = new_listing, user = request.user, value = float(request.POST['starting_bid']), date = datetime.datetime.now(), is_starting=True, is_current=True)
         new_bid.save()
         return HttpResponseRedirect(reverse("index"))
     else:

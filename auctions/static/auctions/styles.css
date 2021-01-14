@@ -93,6 +93,10 @@
     padding-top: 10px;
     color: black;
 }
+.listing-listing_starting_bid{
+    padding-top: 10px;
+    color: green;
+}
 /* bottom col */
 .listing-comment{
     padding-top: 10px;
