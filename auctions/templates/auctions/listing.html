@@ -6,20 +6,20 @@
 {% block body %}
     
         <div class="container-fluid">
-            <div class="row listing-margins">
+            <div class="row border listing-margins">
                 {% if user.is_authenticated %}
-                <div class="col-lg-6 border description col-main">
+                <div class="col-lg-6 description col-main border-right">
                     <h2 class="listing-listing_title">{{ listing.title }}</h2>
                     <!-- watchlist section -->
                     {% if listing in watchlist %}
                         <form class="listing-watchlist" action="{% url 'listing' listing.title %}" method="POST">
                             {% csrf_token %} 
-                            <input  type="submit" name="action" value="Delete from Watchlist">
+                            <input class="btn btn-light" type="submit" name="action" value="Delete from Watchlist">
                         </form>
                     {% else %}
                         <form class="listing-watchlist" action="{% url 'listing' listing.title %}" method="POST">
                             {% csrf_token %} 
-                            <input  type="submit" name="action" value="Add to Watchlist">
+                            <input class="btn btn-light" type="submit" name="action" value="Add to Watchlist">
                         </form>
                     {% endif %}
                     <h6 class="listing-user"> Posted by 
@@ -37,12 +37,12 @@
                         <form class="listing-bid" action="{% url 'listing' listing.title %}" method="POST">
                             <label>Place a Bid:</label>
                             {% csrf_token %}
-                            <input name="bid" type="number" min="{{ bid_limit }}" step="0.01" placeholder="> {{ listing.current_bid|intcomma }}">
-                            <input type="submit" name="action" value="Bid">
+                            <input class="listing-bid-input" name="bid" type="number" min="{{ bid_limit }}" step="0.01" placeholder="> {{ listing.current_bid|intcomma }}">
+                            <input class="btn btn-dark" type="submit" name="action" value="Bid">
                         </form>
                     {% endif %}
                 </div>
-                <div class="col-lg-6 border d-flex justify-content-center align-items-center listing-col-main">
+                <div class="col-lg-6  d-flex justify-content-center align-items-center listing-col-main">
                     <div class="text-center">
                         <!-- img section  -->
                         <img class="listing-listing_image" src="{{ listing.image }}" alt="{{ listing.title }} image">
@@ -50,7 +50,7 @@
                         <h4 class="listing-listing_current_bid">Current Bid: $ {{ listing.current_bid|intcomma }}</h4>
                     </div>
                 </div>
-                <div class="col-12 border listing-col-bottom">
+                <div class="col-12 listing-col-bottom border-top">
                     <!-- comment section -->
                     <label><b> Comments: </b></label>
                     {% for comment in comments %}
@@ -67,7 +67,7 @@
                         <div class="listing-comment">
                             <span class="listing-comment-user"> {{ user.username }} </span> : 
                             <input class="listing-comment-body" type="text" name="body" placeholder="Add a public comment" autocomplete="off">
-                            <input type="submit" name="action" value="Comment">
+                            <input class="btn btn-dark" type="submit" name="action" value="Comment">
                             <div class="listing-comment-date" >{{ datetime }}</div>
                         </div>
 

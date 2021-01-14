@@ -5,6 +5,12 @@
 .navbar{
     background-color: black;
 }
+.btn-light{
+    border-color: black;
+}
+.border{
+    border-radius: 20px;
+}
 /*********index.html**********/
 .col-listing{
     height: 420px;
@@ -68,6 +74,12 @@
 .listing-bid{
     padding-top: 10px;
 }
+.listing-bid-input {
+    outline: 0;
+    border-width: 0 0 1px;
+    border-color: gray;
+    width: 200px;
+}
 /* right col */
 .listing-listing_image{
     max-height: 500px;
@@ -88,16 +100,31 @@
 .listing-comment-user{
     font-weight: 500;
 }
- .listing-comment-date{
+.listing-comment-date{
     color: gray;
- }
- .listing-comment-body {
+}
+.listing-comment-body {
     outline: 0;
     border-width: 0 0 1px;
     border-color: gray;
     width: 350px;
-  }
-  .listing-comment-body:focus {
+}
+.listing-comment-body:focus {
     border-color: black
-  }
-  /*********create.html**********/
+}
+/*********create.html**********/
+.create-margins{
+    margin-top: 20px;
+    margin-left: 30%;
+    margin-right:30%;
+}
+.create-col-main{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+label {
+    font-weight: 500;
+}
+.create-description{
+    width: 100%;
+}

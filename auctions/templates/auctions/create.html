@@ -5,40 +5,49 @@
 
 {% block body %}
     {% if user.is_authenticated %}
-    <h2>Create Listing</h2>
-    <form action="{% url 'create' %}" method="POST">
-        {% csrf_token %} 
-        <!-- title -->
-        <div>
-            <label>Title:</label>
-            <input type="text" name="title" placeholder="Title Here">
+    <div class="container-fluid">
+        <div class="row border create-margins">
+            <div class="col  create-col-main">
+                <h2>Create Listing</h2>
+                <form action="{% url 'create' %}" method="POST">
+                    {% csrf_token %} 
+                    <!-- title -->
+                    <div>
+                        <label>Title:</label>
+                        <input type="text" name="title" placeholder="Title Here">
+                    </div>
+                    <!-- category field  -->
+                    <div>
+                        <label>Category:</label>
+                        <select name="category">
+                            {% for category in categories %}
+                                <option value="{{ category.name }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- description field -->
+                    <div>
+                        <label>Description:</label>
+                        <div><textarea class="create-description" name="description" cols="30" rows="10" placeholder="Description Here"></textarea></div>
+                    </div>
+                    <!-- bid field -->
+                    <div>
+                        <label>Starting Bid: $</label>
+                        <input name="starting_bid" type="number" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <!-- image field -->
+                    <div>
+                        <label>Image:</label>
+                        <input name="image" type="url"  placeholder="https://example.com" pattern="https://.*" size="30" required>
+                    </div>
+                    <div class="text-center">
+                        <input class="create-submit-button btn btn-dark" type="submit" value="Post"></input>
+                    </div>
+                </form>
+
+            </div>
         </div>
-        <!-- category field  -->
-        <div>
-            <label>Category:</label>
-            <select name="category">
-                {% for category in categories %}
-                    <option value="{{ category.name }}">{{ category }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <!-- description field -->
-        <div>
-            <label>Description:</label>
-            <textarea name="description" cols="30" rows="10" placeholder="Description Here"></textarea>
-        </div>
-        <!-- bid field -->
-        <div>
-            <label>Starting Bid:</label>
-            <input name="starting_bid" type="number" min="0" step="0.01">
-        </div>
-        <!-- image field -->
-        <div>
-            <label>Image:</label>
-            <input name="image" type="url"  placeholder="https://example.com" pattern="https://.*" size="30" required>
-        </div>
-        <button type="submit">Post</button>
-    </form>
+    </div>
     {% else %}
     Sign in to create a Listing!.
     {% endif %}
