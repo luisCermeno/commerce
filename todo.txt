@@ -4,9 +4,9 @@
 
 ->If the user is signed in and is the one who created the listing, the user should have the ability to “close” the auction from this page, which makes the highest bidder the winner of the auction and makes the listing no longer active.
 
-<------ fix this -------->
-
 ->If a user is signed in on a closed listing page, and the user has won that auction, the page should say so.
+
+<------ fix this -------->
 
 ->Users should be able to visit a page that displays a list of all listing categories. Clicking on the name of any category should take the user to a page that displays all of the active listings in that category.
 

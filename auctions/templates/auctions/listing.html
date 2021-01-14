@@ -5,6 +5,9 @@
 
 {% block body %}
 <div class="container-fluid">
+    {% if listing.winner == request.user %}
+        <div class="text-center"><h2>Congratulations! You won this auction!</h2></div>
+    {% endif %}
     <div class="row border listing-margins">
         {% if user.is_authenticated %}
         <div class="col-lg-6 description col-main border-right">

@@ -153,3 +153,9 @@ def myListings(request):
         "listings": listings,
         "current_bids": Bid.objects.filter(is_current = True)
     })
+
+def category(request, name):
+    return render(request, "auctions/index.html", {
+        "listings": Listing.objects.filter(categories = name),
+        "current_bids": Bid.objects.filter(is_current = True)
+    })
