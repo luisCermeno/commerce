@@ -132,3 +132,16 @@ label {
 .create-description{
     width: 100%;
 }
+
+/*********create.html**********/
+.watchlist-listing_title{
+    display: inline-block;
+}
+
+.watchlist-listing_current_bid{
+    display: inline-block;
+}
+
+.watchlist-starting-bid{
+    color: green;
+}

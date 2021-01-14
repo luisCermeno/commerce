@@ -92,8 +92,6 @@ def listing(request, title):
             previous_bid.save()
             new_bid = Bid(listing = target_listing, user = request.user, value = float(request.POST['bid']), date = datetime.datetime.now(), is_current=True)
             new_bid.save()
-            target_listing.current_bid = float(new_bid.value)
-            target_listing.save()
         return HttpResponseRedirect(reverse("listing", args=(title,)))
     else:
         try:
@@ -121,7 +119,7 @@ def listing(request, title):
 def create(request):
     if request.method == 'POST':
         category = Category.objects.get(name = request.POST['category'] )
-        new_listing = Listing(title = request.POST['title'] , user = request.user, description = request.POST['description'], image = request.POST['image'], current_bid = float(request.POST['starting_bid']))
+        new_listing = Listing(title = request.POST['title'] , user = request.user, description = request.POST['description'], image = request.POST['image'])
         new_listing.save()
         new_listing.categories.add(category)
         new_bid = Bid(listing = new_listing, user = request.user, value = float(request.POST['starting_bid']), date = datetime.datetime.now(), is_starting=True, is_current=True)
@@ -138,7 +136,8 @@ def watchlist(request):
     except:
         watchlist = []
     return render(request, "auctions/watchlist.html", {
-        "watchlist": watchlist
+        "watchlist": watchlist,
+        "current_bids": Bid.objects.filter(is_current = True)
     })
 
 def myListings(request):
@@ -147,5 +146,6 @@ def myListings(request):
     except:
         listings = []
     return render(request, "auctions/myListings.html", {
-        "listings": listings
+        "listings": listings,
+        "current_bids": Bid.objects.filter(is_current = True)
     })

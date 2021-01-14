@@ -1,17 +1,33 @@
 {% extends "auctions/layout.html" %}
+{% load humanize %}
 
 {% block title %}My Watchlist &middot Auctions{% endblock %}
 {% block nav_item_watchlist %}active{% endblock nav_item_watchlist %}
 
 {% block body %}
     {% if user.is_authenticated %}
-        <h4> My Watchlist :</h4>
-        {% for listing in watchlist %}
-           <div>
-                <h4 class="listing_title"><a href="{% url 'listing' listing %}">{{ listing }}</a></h4>
-            </div> 
-        {% empty %}
-            <h6>No Listings Yet</h6>
-        {% endfor %} 
+        <ul>
+            <h3> My Watchlist :</h3>
+            {% for listing in watchlist %}
+                <li>
+                    <h4 class="watchlist-listing_title"><a href="{% url 'listing' listing %}">{{ listing }}</a></h4>
+                    <div class="watchlist-listing_current_bid">
+                        {% for bid in current_bids %}
+                            {% if bid.listing == listing %}
+                                {% if bid.is_starting == True %}
+                                    <h5 class="watchlist-starting-bid"> ( $ {{ bid.value|intcomma }} ) </h5>
+                                {% else %}
+                                    <h5> ( $ {{ bid.value|intcomma }} ) </h5>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </li> 
+            {% empty %}
+                <li>
+                    <h6>No Listings Yet</h6>
+                </li>
+            {% endfor %} 
+        </ul>
     {% endif %} 
 {% endblock %}
