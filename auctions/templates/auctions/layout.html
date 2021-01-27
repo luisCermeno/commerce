@@ -5,89 +5,92 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
-        <!-- bootsrap library -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'index' %}">Auctions</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item {% block nav_item_listings %}{% endblock nav_item_listings %}">
-                            <a class="nav-link" aria-current="page" href="{% url 'index' %}">Active Listings</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Categories
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% for category in categories %}
-                            <a class="dropdown-item" href="{% url 'category'  category %}">{{ category }} </a>
-                            {% endfor %}
-                            </div>
-                        </li>
-                        {% if user.is_authenticated %}
-                        <li class="nav-item {% block nav_item_create %}{% endblock nav_item_create %}">
-                            <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
-                        </li>
-                        <li class="nav-item {% block nav_item_watchlist %}{% endblock nav_item_watchlist %}">
-                            <a class="nav-link" href="{% url 'watchlist' %}">
-                                Watch List 
-                                <span>
-                                {% if user.watchlist.listings.all.count > 0 %}
-                                    ({{ user.watchlist.listings.all.count}})
+            <a class="navbar-brand" href="{% url 'index' %}">Auctions</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% block nav_item_listings %}{% endblock nav_item_listings %}">
+                        <a class="nav-link" aria-current="page" href="{% url 'index' %}">Active Listings</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categories
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for category in categories %}
+                        <a class="dropdown-item" href="{% url 'category'  category %}">{{ category }} </a>
+                        {% endfor %}
+                        </div>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item {% block nav_item_create %}{% endblock nav_item_create %}">
+                        <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
+                    </li>
+                    <li class="nav-item {% block nav_item_watchlist %}{% endblock nav_item_watchlist %}">
+                        <a class="nav-link" href="{% url 'watchlist' %}">
+                            Watch List 
+                            <span>
+                            {% if user.watchlist.listings.all.count > 0 %}
+                                ({{ user.watchlist.listings.all.count}})
+                            {% else %} 
+                                (0)
+                            {% endif %}
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% block nav_item_myListings %}{% endblock nav_item_myListings %}">
+                        <a class="nav-link" href="{% url 'myListings' %}">
+                            My Listings 
+                            <span>
+                                {% if user.listings.all.count > 0 %}
+                                    ({{ user.listings.all.count}})
                                 {% else %} 
                                     (0)
                                 {% endif %}
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {% block nav_item_myListings %}{% endblock nav_item_myListings %}">
-                            <a class="nav-link" href="{% url 'myListings' %}">
-                                My Listings 
-                                <span>
-                                    {% if user.listings.all.count > 0 %}
-                                        ({{ user.listings.all.count}})
-                                    {% else %} 
-                                        (0)
-                                    {% endif %}
-                                </span>
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                        {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                    Signed in as <strong>{{ user.username }}</strong>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item {% block nav_item_login %}{% endblock nav_item_login %}">
-                            <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                        </li>
-                        <li class="nav-item {% block nav_item_register %}{% endblock nav_item_register %}">
-                            <a class="nav-link" href="{% url 'register' %}">Register</a>
-                        </li>
-                        {% endif %}
-                    </ul> 
-                </div>
+                            </span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                                Signed in as <strong>{{ user.username }}</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item {% block nav_item_login %}{% endblock nav_item_login %}">
+                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item {% block nav_item_register %}{% endblock nav_item_register %}">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul> 
             </div>
         </nav>
         <div class="main">
         {% block body %}
         {% endblock %}
         </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
 </html>
