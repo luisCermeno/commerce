@@ -20,7 +20,10 @@ class Listing(models.Model):
     description = models.TextField(max_length=500)
     image = models.URLField(max_length=200, blank=True)
     closed = models.BooleanField(default=False)
-    winner = models.ForeignKey(User, null=True , on_delete=models.CASCADE, related_name='winned_listings')
+    date = models.DateTimeField(auto_now_add=True)
+    winner = models.ForeignKey(User, null=True , blank=True, on_delete=models.CASCADE, related_name='winned_listings')
+    class Meta:
+        ordering = ['-date']
 
     def __str__(self):
         return f"{self.title}"
@@ -34,6 +37,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.user} @ {self.date} on {self.listing} said: {self.body}"
+    class Meta:
+        ordering = ['-date']
 
 class Bid(models.Model):
     listing = models.ForeignKey(Listing,on_delete=models.CASCADE,related_name='bids')
