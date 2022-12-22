@@ -1,6 +1,5 @@
-# Project 2 "Commerce"
+# Auctions.com
 
-Project2 for **Harvard's CS50**
+![Screenshot] (auctions1.png)
 
-Design an eBay-like e-commerce auction site that will allow users to post auction listings, 
-place bids on listings, comment on those listings, and add listings to a “watchlist.”
+Auctions.com behaves like e-Bay. Users can browse through a variety of listings in the main page; they can comment and/or bid on a listing. The owner of the listing decides wheter to close the auction to the highest bid. An interactive watchlist is also available. For future updates, I plan to implement a secured payment system.
