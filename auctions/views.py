@@ -8,20 +8,20 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 import datetime
 
-
+@csrf_exempt
 def index(request):
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all(),
         "current_bids": Bid.objects.filter(is_current = True)
     })
-
+@csrf_exempt
 def category(request, name):
     return render(request, "auctions/index.html", {
         "filter": name,
         "listings": Listing.objects.filter(categories = Category.objects.get(name = name)),
         "current_bids": Bid.objects.filter(is_current = True)
     })
-
+@csrf_exempt
 def login_view(request):
     if request.method == "POST":
         # Attempt to sign user in
@@ -66,11 +66,13 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+@csrf_exempt
 @login_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
+@csrf_exempt
 @login_required
 def listing(request, title):
     if request.method == 'POST':
@@ -149,6 +151,7 @@ def listing(request, title):
         except Listing.DoesNotExist:
             return HttpResponseBadRequest("Bad Request: listing does not exist")
 
+@csrf_exempt
 @login_required
 def create(request):
     if request.method == 'POST':
@@ -167,6 +170,7 @@ def create(request):
             "categories": Category.objects.all()
         })
 
+@csrf_exempt
 @login_required
 def watchlist(request):
     try:
@@ -180,6 +184,7 @@ def watchlist(request):
         "current_bids": Bid.objects.filter(is_current = True)
     })
 
+@csrf_exempt
 @login_required
 def myListings(request):
     try:
